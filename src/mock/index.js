@@ -1,5 +1,4 @@
 import { createServer } from 'miragejs';
-// import { Post } from '../Post/Post';
 
 import data from './data.json';
 

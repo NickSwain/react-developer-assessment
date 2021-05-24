@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { PostStyles } from './Post.styles';
 
-interface Category {
+export interface Category {
   id: string;
   name: string;
 }

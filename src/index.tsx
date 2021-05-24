@@ -12,7 +12,7 @@ import './mock';
 import './styles/index.css';
 
 // Include application component.
-import App from './components/App/App';
+import App from './components/App';
 
 ReactDOM.render(
   <React.StrictMode>

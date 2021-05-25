@@ -9,7 +9,31 @@ createServer({
     this.get('/posts', (schema, request) => {
       const items = data;
 
-      return items.posts.slice(0, request.queryParams.pageSize);
+      console.log(request.queryParams.category);
+
+      if (request.queryParams.category !== undefined) {
+        let filteredItems = [];
+
+        // get items by category name
+        items.posts.filter((post) =>
+          post.categories
+            .filter(
+              (category) => category.name === request.queryParams.category
+            )
+            .map(() => {
+              filteredItems.push(post);
+            })
+        );
+
+        filteredItems = filteredItems.filter(
+          (item, index) =>
+            index === filteredItems.findIndex((post) => post.id === item.id)
+        );
+
+        return filteredItems;
+      }
+
+      return items.posts;
     });
   },
 });

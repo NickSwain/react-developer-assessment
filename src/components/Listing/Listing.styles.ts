@@ -32,6 +32,7 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   position: relative;
   padding: 10px 20px;
+  border-radius: 5px;
   background-color: ${brand.gunMetal};
   color: ${brand.white};
   outline: none;
@@ -49,6 +50,7 @@ const Button = styled.button`
     position: absolute;
     top: 50%;
     left: 50%;
+    border-radius: 5px;
     transform: translate(-50%, -50%);
     height: 100%;
     background-color: ${brand.mossGreen};

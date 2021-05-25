@@ -1,6 +1,7 @@
 import queryString from 'query-string';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { NumberParam, useQueryParam } from 'use-query-params';
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params';
+import CategoryFilter from '../CategoryFilter/CategoryFilter';
 import Listing from '../Listing/Listing';
 import { Post } from '../Posts/PostItem';
 import { HomeStyles } from './Home.styles';
@@ -16,14 +17,19 @@ const Home: FunctionComponent = () => {
     'pageSize',
     NumberParam
   );
+  const [category, setCategory] = useQueryParam('category', StringParam);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function getData() {
       setIsLoading(true);
 
+      if (category !== undefined) {
+        setPageSize(POSTS_PER_PAGE);
+      }
+
       const query = {
-        pageSize: pageSize,
+        category: category,
       };
 
       const res = await fetch(`${API_URL}?${queryString.stringify(query)}`);
@@ -40,15 +46,15 @@ const Home: FunctionComponent = () => {
     }
 
     getData();
-  }, [pageSize]);
+  }, [category]);
 
-  const categories: string[] = [];
+  const allCategories: string[] = [];
 
   data?.map((item) => {
     if (item.categories) {
       item.categories.map((category) => {
-        if (categories.indexOf(category.name) === -1) {
-          categories.push(category.name);
+        if (allCategories.indexOf(category.name) === -1) {
+          allCategories.push(category.name);
         }
       });
     }
@@ -61,9 +67,15 @@ const Home: FunctionComponent = () => {
           <HomeStyles.Title>React Developer Test</HomeStyles.Title>
           <HomeStyles.Subtitle>See the posts below</HomeStyles.Subtitle>
         </HomeStyles.TitleContainer>
+        <CategoryFilter
+          categories={allCategories}
+          setCategories={setCategory}
+          activeCategory={category}
+        />
         <Listing
           isLoading={isLoading}
           data={data}
+          allResultsCount={data?.length}
           pageSize={pageSize}
           setPageSize={setPageSize}
         />

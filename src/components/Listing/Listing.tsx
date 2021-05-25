@@ -7,6 +7,7 @@ import { ListingStyles } from './Listing.styles';
 interface ListingProps {
   isLoading: boolean;
   data?: Post[];
+  allResultsCount?: number;
   pageSize: number | null;
   setPageSize: any;
 }
@@ -14,6 +15,7 @@ interface ListingProps {
 const Listing: FunctionComponent<ListingProps> = ({
   isLoading,
   data,
+  allResultsCount,
   pageSize,
   setPageSize,
 }) => {
@@ -23,6 +25,10 @@ const Listing: FunctionComponent<ListingProps> = ({
     }
   };
 
+  if (!pageSize) {
+    return null;
+  }
+
   return (
     <>
       <ListingStyles.ListContainer>
@@ -30,23 +36,29 @@ const Listing: FunctionComponent<ListingProps> = ({
           <Loading />
         ) : (
           data &&
-          data.map((post) => (
-            <PostItem
-              key={post.id}
-              id={post.id}
-              title={post.title}
-              author={post.author}
-              summary={post.summary}
-              publishDate={post.publishDate}
-            />
-          ))
+          data
+            .slice(0, pageSize)
+            .map((post) => (
+              <PostItem
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                author={post.author}
+                summary={post.summary}
+                publishDate={post.publishDate}
+              />
+            ))
         )}
       </ListingStyles.ListContainer>
-      <ListingStyles.ButtonContainer>
-        <ListingStyles.Button onClick={() => handleClick()}>
-          <ListingStyles.ButtonText>Load More</ListingStyles.ButtonText>
-        </ListingStyles.Button>
-      </ListingStyles.ButtonContainer>
+      {allResultsCount !== undefined &&
+        pageSize !== null &&
+        allResultsCount > pageSize && (
+          <ListingStyles.ButtonContainer>
+            <ListingStyles.Button onClick={() => handleClick()}>
+              <ListingStyles.ButtonText>Load More</ListingStyles.ButtonText>
+            </ListingStyles.Button>
+          </ListingStyles.ButtonContainer>
+        )}
     </>
   );
 };

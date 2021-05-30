@@ -24,6 +24,10 @@ const CategoryFilter: FunctionComponent<CategoryProps> = ({
     setCategories(e.currentTarget.dataset.value);
   };
 
+  const handleClear = () => {
+    setCategories(undefined);
+  };
+
   return (
     <CategoryFilterStyles.FiltersContainer>
       <CategoryFilterStyles.SelectContainer onClick={() => setActive(!active)}>
@@ -42,6 +46,11 @@ const CategoryFilter: FunctionComponent<CategoryProps> = ({
           ))}
         </CategoryFilterStyles.SelectDropdown>
       </CategoryFilterStyles.SelectContainer>
+      <CategoryFilterStyles.ClearFilters onClick={() => handleClear()}>
+        <CategoryFilterStyles.ClearFilterButtonText>
+          Clear filters
+        </CategoryFilterStyles.ClearFilterButtonText>
+      </CategoryFilterStyles.ClearFilters>
     </CategoryFilterStyles.FiltersContainer>
   );
 };

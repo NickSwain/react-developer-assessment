@@ -13,10 +13,8 @@ const API_URL = '/api/posts';
 
 const Home: FunctionComponent = () => {
   const [data, setData] = useState<Post[]>();
-  const [pageSize = POSTS_PER_PAGE, setPageSize] = useQueryParam(
-    'pageSize',
-    NumberParam
-  );
+
+  const [pageSize, setPageSize] = useQueryParam('pageSize', NumberParam);
   const [category, setCategory] = useQueryParam('category', StringParam);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -24,14 +22,15 @@ const Home: FunctionComponent = () => {
     async function getData() {
       setIsLoading(true);
 
-      if (category !== undefined) {
-        setPageSize(POSTS_PER_PAGE);
-      }
+      // set the page size to the variable at the top of the page.
+      // This will also reset the page size when the filter is changed.
+      setPageSize(POSTS_PER_PAGE);
 
       const query = {
         category: category,
       };
 
+      // fetch the data from the API with the query string added so we can filter.
       const res = await fetch(`${API_URL}?${queryString.stringify(query)}`);
 
       if (!res.ok) {
@@ -50,6 +49,7 @@ const Home: FunctionComponent = () => {
 
   const allCategories: string[] = [];
 
+  // map through all of the items returned by the API to get the categories.
   data?.map((item) => {
     if (item.categories) {
       item.categories.map((category) => {

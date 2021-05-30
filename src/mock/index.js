@@ -9,8 +9,7 @@ createServer({
     this.get('/posts', (schema, request) => {
       const items = data;
 
-      console.log(request.queryParams.category);
-
+      // check if the category filter is undefined
       if (request.queryParams.category !== undefined) {
         let filteredItems = [];
 
@@ -25,6 +24,7 @@ createServer({
             })
         );
 
+        // Some of the blog posts had the same category twice adding in the below so we only get unique posts back.
         filteredItems = filteredItems.filter(
           (item, index) =>
             index === filteredItems.findIndex((post) => post.id === item.id)

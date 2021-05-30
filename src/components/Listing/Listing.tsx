@@ -8,7 +8,7 @@ interface ListingProps {
   isLoading: boolean;
   data?: Post[];
   allResultsCount?: number;
-  pageSize: number | null;
+  pageSize: number | null | undefined;
   setPageSize: any;
 }
 
@@ -50,6 +50,8 @@ const Listing: FunctionComponent<ListingProps> = ({
             ))
         )}
       </ListingStyles.ListContainer>
+
+      {/* Only display the load more button if there are more posts to load */}
       {allResultsCount !== undefined &&
         pageSize !== null &&
         allResultsCount > pageSize && (
